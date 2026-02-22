@@ -1,0 +1,12 @@
+com\example\packageservice\dto\CreatePackageRequest.class
+com\example\packageservice\dto\PackageResponse.class
+com\example\packageservice\config\GatewayConfig.class
+com\example\packageservice\gateway\dto\Product.class
+com\example\packageservice\service\PackageService.class
+com\example\packageservice\controller\PackageController.class
+com\example\packageservice\exception\PackageNotFoundException.class
+com\example\packageservice\PackageServiceApplication.class
+com\example\packageservice\service\CurrencyService.class
+com\example\packageservice\repository\PackageRepository.class
+com\example\packageservice\gateway\ProductServiceGateway.class
+com\example\packageservice\model\ProductPackage.class
