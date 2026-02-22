@@ -24,6 +24,7 @@ the total price displayed for Packages between several global currencies.</p>
 <p>Ensure that Postgres is running prior to launching the web service, and that the packages database has been created.</p>
 <p>Ensure that the web service is up and running prior to launching the React frontend, via npm start.</p>
 <p>if you would like to use in memory data management, set package.repository.inmemory to true i application.properties</p>
+</br>
 
 <h2>High-Level Architecture</h2>
 <p>Key architectural principles:</p>
