@@ -1,111 +1,161 @@
 <h2>Overview:</h2>
-<p>This application is a Java based RESTful web service that allows users to create a Package consisting of multiple Products, as well as query all exising Packages, delete Packages, and update Packages. It also includes functionality to convert
-the total price displayed for Packages between several global currencies.</p>
-<p>The solution includes an API, as well as a minimal React frontend. It makes use of a Postgres database, but there is also the option to run it locally using an in memory repository. The API includes a Swagger page for ease of testing endpoints.</p>
-</br>
+<p>
+This application is a Java-based RESTful web service that allows users to create a Package consisting of multiple Products, as well as retrieve, update, and delete existing Packages. It also supports converting the total price of a Package into several global currencies.
+</p>
+<p>
+The solution includes a Spring Boot API and a minimal React frontend. It makes use of a Postgres database, with the option to run locally using an in-memory repository implementation. The API also exposes a Swagger (OpenAPI) page for convenient endpoint testing.
+</p>
+<br/>
 
 <h2>How to Run</h2>
 <p>In order to run this solution you require the following prerequisites installed on your machine:</p>
 <ul>
   <li>JDK 17</li>
-  <li>React</li>
+  <li>Node.js / npm</li>
   <li>Postgres</li>
 </ul>
-</br>
-<p>You will also need to add the following environment variables in order to access the ProductServiceGateway:</p>
+<br/>
+
+<p>You will also need to configure the following environment variables in order to access the ProductServiceGateway:</p>
 <ul>
   <li>PRODUCT_GATEWAY_USER</li>
   <li>PRODUCT_GATEWAY_PASSWORD</li>
   <li>PRODUCT_DB_USER</li>
   <li>PRODUCT_DB_PASSWORD</li>
 </ul>
-<p>You should have access to the correct values for these variables</p>
-</br>
-<p>Ensure that Postgres is running prior to launching the web service, and that the packages database has been created.</p>
-<p>Ensure that the web service is up and running prior to launching the React frontend, via npm start.</p>
-<p>if you would like to use in memory data management, set package.repository.inmemory to true i application.properties</p>
-</br>
+<p>You should have access to the correct values for these variables.</p>
+<br/>
+
+<p>
+Ensure that Postgres is running prior to launching the backend service, and that the <b>packages</b> database has been created.
+</p>
+<p>
+Ensure that the backend service is running prior to launching the React frontend via <b>npm start</b>.
+</p>
+<p>
+If you would like to use in-memory data management instead of Postgres, set <b>package.repository.inmemory=true</b> in <b>application.properties</b>.
+</p>
+
+<br/>
 
 <h2>High-Level Architecture</h2>
 <p>Key architectural principles:</p>
 <ul>
-  <li><b>Separation of concerns:</b> Processing of Package requests, data storage and retrieval, retrieval of Products from the gateway client, currency conversion, is all handled by dedicated services.</li>
-  <li><b>Dependency inversion:</b> External dependencies (ProductServiceGateway, Frankfurter CurrencyService) are accessed via interfaces.</li>
-  <li><b>Extendability:</b> The use of interfaces for all services and the repository means that we can easily add new implementations in the future should we need to without having to modify the existing interfaces or overall structure of the solution.</li>
-  <li><b>Performance:</b> The use of hash maps and caching for Products and Currency Rates means that lookups are fast and efficient, and we remove the need to constantly query the external APIs. The caches for both Products and Currency Rates are updated once per day,
-  which is particularly relevant for Currency Rates as the Frankfurter service only updates it's conversion rates once per day.</li>
-  <li><b>Concurrency:</b> The project uses ConcurrentHashMaps to manage shared data structures safely in a multi-threaded environment. ConcurrentHashMap provides thread-safe operations for lookups, inserts, 
-  and updates, reducing the risk of race conditions when multiple threads access or modify the map concurrently. This ensures reliable and consistent behavior without requiring explicit synchronization for standard operations.</li>
+  <li>
+    <b>Separation of concerns:</b> Processing of Package requests, data storage and retrieval, product retrieval via the gateway client, and currency conversion are all handled by dedicated services.
+  </li>
+  <li>
+    <b>Dependency inversion:</b> External dependencies (ProductServiceGateway and Frankfurter CurrencyService) are accessed via interfaces.
+  </li>
+  <li>
+    <b>Extensibility:</b> The use of interfaces for services and repositories allows new implementations to be added in the future without modifying existing business logic.
+  </li>
+  <li>
+    <b>Performance:</b> Hash-based lookups and caching for Products and Currency Rates ensure efficient data access. Currency rates are refreshed once per day, which aligns with the Frankfurter service update schedule.
+  </li>
+  <li>
+    <b>Concurrency:</b> ConcurrentHashMap is used for shared in-memory data structures to ensure thread-safe operations in a multi-threaded environment without requiring explicit synchronization.
+  </li>
 </ul>
-</br>
+
+<br/>
 
 <h2>React Frontend</h2>
-<p>A React frontend application is included in the solution. This was designed to be minimal, but functional as a proof-of-concept frontend interacting with the package-service API.</p>
-<p>It serves it's purpose as a proof-of-concept, however with more time I would have liked to expand it in the following ways:</p>
+<p>
+A minimal React frontend application is included as a proof-of-concept interface for interacting with the package-service API.
+</p>
+<p>
+It currently supports creating and listing Packages. With more time, I would expand it in the following ways:
+</p>
 <ul>
-  <li>Add functionality to be able to retrieve specific Packages by id, and update existing packages</li>
+  <li>Add functionality to retrieve specific Packages by ID and update existing Packages</li>
   <li>Add validation for input fields</li>
-  <li>A dropdown list of available currencies rather than a free text input. This could be populated by an request to the package-service API</li>
-  <li>Error handling for failed API requests, and frontend friendly error popups</li>
-  <li>A more thouroughly designed UI, with attracive styling and separate pages for different operations</li>
+  <li>Replace free-text currency input with a dropdown populated from the API</li>
+  <li>Add improved error handling and user-friendly error notifications</li>
+  <li>Enhance overall UI design with clearer separation of pages and improved styling</li>
 </ul>
-</br>
 
-<h2>Backend Java / Springboot Web Service</h2>
-<p>The backend web service is the core of the soluton, and is therefore where I focused the majority of my development time. It was designed with performance, and extenability as the primary features.</p>
-<p>Validation has been added to all API endpoints, to ensure that requests are made with the correct arguments supplied in the correct format, and within stipulations such as maximum length of string properties.</p>
-<p>A Swagger page is also added to allow for easy testing of API endpoints.</p>
-<p>I am mostly satisfied with this backend service, and I feel that it meets the requirements of an MVP, however with more time I would like to make the following improvements / additions:</p>
+<br/>
+
+<h2>Backend Java / Spring Boot Web Service</h2>
+<p>
+The backend service is the core of the solution, and therefore where the majority of development effort was focused. It was designed with performance and extensibility as primary goals.
+</p>
+<p>
+Validation is applied to all API endpoints to ensure requests contain correctly formatted data and comply with constraints such as maximum string lengths.
+</p>
+<p>
+A Swagger (OpenAPI) page is included to allow for easy testing and exploration of the API.
+</p>
+
+<p>
+While the backend meets the requirements of an MVP, the following improvements could be made with more time:
+</p>
 <ul>
-  <li>Currently the Products are cached once per day on a schedule, which may be sufficient, however this depends on when and how Products are added to the external Product database. I am assuming that new Products are added only as
-  often as once per day at midnight, however if that is not the case, a more frequent caching schedule may be required, or even an event that the CurrencyService could subscribe to so that every time a Product is added, the cache is updated</li>
-  <li>Add an endpoint which retrieves all available Currency Rates, as mentioned previously</li>
-  <li>Unit tests for the CurrencyService, ProductServiceGateway, and PacakgeRepository</li>
-  <li>Implement authentication and authorisation for the API, this could be anything from OAuth to...</li>
-  <li>The logger is sufficient for an MVP, but I would have liked to add some kind of auditing database to permanently record all interactions with the service.</li>
-  <li>Implement a Service Bus which could be used to queue failed Create Package requests until a later time when the service is functioning, so as to guarantee eventual processing of these requests.</li>
-  <li>Implement a Circuit Breaker to protect API calls from cascading failures by temporarily halting requests to failing external services (Frankfurter; ProductServiceGateway)</li>
-  <li>Implement functionality to prevent a user from making a high volume of API requests withing a short time frame</li>
+  <li>
+    Review and potentially adjust the product caching schedule depending on how frequently Products are updated externally.
+  </li>
+  <li>Add an endpoint to retrieve all supported currency rates.</li>
+  <li>Increase unit test coverage (CurrencyService, ProductServiceGateway, and repository layer).</li>
+  <li>Implement authentication and authorization (e.g. OAuth2 or JWT).</li>
+  <li>Add structured auditing to persist a record of all interactions with the service.</li>
+  <li>Introduce a service bus to queue failed Create Package requests for later processing.</li>
+  <li>Implement a circuit breaker to protect against cascading failures from external services.</li>
+  <li>Add request rate limiting to prevent high-volume abuse of the API.</li>
 </ul>
-</br>
 
-<h2>Postgres Database / In Memory Data</h2>
-<p>Two IPackageRepository implementations exist:</p>
+<br/>
+
+<h2>Postgres Database / In-Memory Data</h2>
+<p>Two <b>IPackageRepository</b> implementations exist:</p>
 <ul>
-  <li><b>PackageRepository</b></li>
+  <li><b>PackageRepository</b> (Postgres)</li>
   <li><b>InMemoryPackageRepository</b></li>
 </ul>
-<p>Both implement <b>IPackageRepository</b>, allowing the data storage implementation to be swapped without changing application logic.</p>
-</br>
-<p>The appropriate implementation is registered at startup based on the <b>package.repository.inmemory</b> configuration value in application.properties. This approach:</p>
+
+<p>
+The appropriate implementation is registered at startup based on the <b>package.repository.inmemory</b> configuration value in <b>application.properties</b>.
+</p>
+
+<p>This approach:</p>
 <ul>
   <li>Simplifies local development</li>
   <li>Improves testability</li>
   <li>Makes the system easily extensible to support additional data storage providers in the future</li>
 </ul>
-</br>
 
-<h2>Backend Service Error handling</h2>
+<br/>
+
+<h2>Backend Service Error Handling</h2>
 <p>Package operations include structured exception handling for:</p>
 <ul>
-  <li>Illegal argument errors</li>
-  <li>Custom PackageNotFound errors</li>
-  <li>Any other unexpected errors</li>
+  <li>IllegalArgumentException</li>
+  <li>Custom PackageNotFoundException</li>
+  <li>Unexpected runtime exceptions</li>
 </ul>
-</br>
-<p>Errors are captured and logged in a readable, yet detailed manner. The application remains responsive and usable even after failures.</p>
-</br>
+
+<p>
+Errors are logged in a readable and structured manner, and appropriate HTTP responses are returned. The application remains responsive even in the event of failures.
+</p>
+
+<br/>
 
 <h2>Testing Strategy</h2>
-<p>Unit tests are included for:</p>
+
+<p><b>Unit tests are included for:</b></p>
 <ul>
   <li>PackageService</li>
 </ul>
-</br>
-<p>External dependencies IPackageRepository, IProductServiceGateway and ICurrencyService are mocked to ensure tests are fast, deterministic, and do not require external infrastructure.</p>
-<p>Integration tests are included for:</p>
+
+<p>
+External dependencies (IPackageRepository, IProductServiceGateway, and ICurrencyService) are mocked to ensure tests are fast, deterministic, and independent of external infrastructure.
+</p>
+
+<p><b>Integration tests are included for:</b></p>
 <ul>
   <li>PackageController</li>
 </ul>
-</br>
-<p>These are desgined to be more thorough, as they actually spin up the service and test all the endpoints from end to end.</p>
+
+<p>
+These tests spin up the application context and verify endpoints end-to-end.
+</p>
