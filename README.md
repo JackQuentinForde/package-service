@@ -5,7 +5,6 @@ This application is a Java-based RESTful web service that allows users to create
 <p>
 The solution includes a Spring Boot API and a minimal React frontend. It makes use of a Postgres database, with the option to run locally using an in-memory repository implementation. The API also exposes a Swagger (OpenAPI) page for convenient endpoint testing.
 </p>
-<br/>
 
 <h2>How to Run</h2>
 <p>In order to run this solution you require the following prerequisites installed on your machine:</p>
