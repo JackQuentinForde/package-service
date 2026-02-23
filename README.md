@@ -103,8 +103,21 @@ While the backend meets the requirements of an MVP, the following improvements c
   <li>Implement a circuit breaker to protect against cascading failures from external services.</li>
   <li>Add request rate limiting to prevent high-volume abuse of the API.</li>
 </ul>
-
 <br/>
+
+<h2>Potential Additions</h2>
+
+<p>
+With more time, I would have implemented CI/CD pipelines and infrastructure provisioning scripts to enable automated deployment to a cloud provider.
+</p>
+
+<p>
+This would include infrastructure-as-code (e.g. Terraform or similar) to provision the required resources (compute, database, networking), as well as separate deployment pipelines for the Spring Boot API and the React frontend.
+</p>
+
+<p>
+I would also migrate sensitive configuration values (such as gateway credentials and database passwords) to a managed cloud secrets service rather than relying on local environment variables. This would improve security, centralise secret management, and better align the solution with production-grade deployment practices.
+</p>
 
 <h2>Postgres Database / In-Memory Data</h2>
 <p>Two <b>IPackageRepository</b> implementations exist:</p>
