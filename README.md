@@ -116,7 +116,11 @@ This would include infrastructure-as-code (e.g. Terraform or similar) to provisi
 </p>
 
 <p>
-I would also migrate sensitive configuration values (such as gateway credentials and database passwords) to a managed cloud secrets service rather than relying on local environment variables. This would improve security, centralise secret management, and better align the solution with production-grade deployment practices.
+I would also containerise both the backend and frontend using Docker, ensuring consistent environments across local development, testing, and production. This would simplify deployment and improve portability across cloud platforms.
+</p>
+
+<p>
+Sensitive configuration values (such as gateway credentials and database passwords) would be migrated to a managed cloud secrets service rather than relying on local environment variables. This would improve security, centralise secret management, and better align the solution with production-grade deployment practices.
 </p>
 
 <h2>Postgres Database / In-Memory Data</h2>
